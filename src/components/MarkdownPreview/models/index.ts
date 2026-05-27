@@ -1,5 +1,6 @@
 import { mockEventStreamText } from '@/data'
 import { sleep } from '@/utils/request'
+import type { ApiMessage } from '@/types/chat'
 
 /**
  * 转义处理响应值为 data: 的 json 字符串
@@ -163,15 +164,6 @@ type ContentResult = {
   done: boolean
 }
 
-type DoneResult = {
-  content: any
-  isWaitQueuing?: any
-} & {
-  done: boolean
-}
-
-export type CrossTransformFunction = (readValue: Uint8Array | string, textDecoder: TextDecoder) => DoneResult
-
 export type TransformFunction = (readValue: Uint8Array | string, textDecoder: TextDecoder) => ContentResult
 
 interface TypesModelLLM {
@@ -182,7 +174,7 @@ interface TypesModelLLM {
   // Stream 结果转换器
   transformStreamValue: TransformFunction
   // 每个大模型调用的 API 请求
-  chatFetch: (text: string) => Promise<Response>
+  chatFetch: (messages: ApiMessage[]) => Promise<Response>
 }
 
 
@@ -218,7 +210,7 @@ export const modelMappingList: TypesModelLLM[] = [
       }
     },
     // Mock Event Stream 用于模拟读取大模型接口 Mock 数据
-    async chatFetch(text): Promise<Response> {
+    async chatFetch(messages: ApiMessage[]): Promise<Response> {
       // 模拟 res.body 的数据
       // 将 mockData 转换为 ReadableStream
 
@@ -260,13 +252,8 @@ export const modelMappingList: TypesModelLLM[] = [
       }
     },
     // Event Stream 调用大模型接口 DeepSeek 深度求索 (Fetch 调用)
-    chatFetch(text) {
+    chatFetch(messages: ApiMessage[]) {
       const url = new URL(`${ location.origin }/deepseek/chat/completions`)
-      const params = {
-      }
-      Object.keys(params).forEach(key => {
-        url.searchParams.append(key, params[key])
-      })
 
       const req = new Request(url, {
         method: 'post',
@@ -275,15 +262,9 @@ export const modelMappingList: TypesModelLLM[] = [
           'Authorization': `Bearer ${ import.meta.env.VITE_DEEPSEEK_KEY }`
         },
         body: JSON.stringify({
-          // 普通模型 V3
           'model': 'deepseek-chat',
           stream: true,
-          messages: [
-            {
-              'role': 'user',
-              'content': text
-            }
-          ]
+          messages
         })
       })
       return fetch(req)
@@ -309,13 +290,8 @@ export const modelMappingList: TypesModelLLM[] = [
       }
     },
     // Event Stream 调用大模型接口 DeepSeek 深度求索 (Fetch 调用)
-    chatFetch(text) {
+    chatFetch(messages: ApiMessage[]) {
       const url = new URL(`${ location.origin }/deepseek/chat/completions`)
-      const params = {
-      }
-      Object.keys(params).forEach(key => {
-        url.searchParams.append(key, params[key])
-      })
 
       const req = new Request(url, {
         method: 'post',
@@ -324,15 +300,9 @@ export const modelMappingList: TypesModelLLM[] = [
           'Authorization': `Bearer ${ import.meta.env.VITE_DEEPSEEK_KEY }`
         },
         body: JSON.stringify({
-          // 推理模型
           'model': 'deepseek-reasoner',
           stream: true,
-          messages: [
-            {
-              'role': 'user',
-              'content': text
-            }
-          ]
+          messages
         })
       })
       return fetch(req)
@@ -353,13 +323,8 @@ export const modelMappingList: TypesModelLLM[] = [
       }
     },
     // Event Stream 调用大模型接口 Ollama3 (Fetch 调用)
-    chatFetch(text) {
+    chatFetch(messages: ApiMessage[]) {
       const url = new URL(`http://localhost:11434/api/chat`)
-      const params = {
-      }
-      Object.keys(params).forEach(key => {
-        url.searchParams.append(key, params[key])
-      })
 
       const req = new Request(url, {
         mode: 'cors',
@@ -368,7 +333,6 @@ export const modelMappingList: TypesModelLLM[] = [
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          // 'model': 'deepseek-r1', // 内置深度思考响应
           'model': 'llama3',
           stream: true,
           messages: [
@@ -376,10 +340,7 @@ export const modelMappingList: TypesModelLLM[] = [
               role: 'system',
               content: '你的名字叫做小O, 全程使用中文回答我的问题。'
             },
-            {
-              role: 'user',
-              content: text
-            }
+            ...messages
           ]
         })
       })
@@ -401,13 +362,8 @@ export const modelMappingList: TypesModelLLM[] = [
       }
     },
     // Event Stream 调用大模型接口 Spark 星火认知大模型 (Fetch 调用)
-    chatFetch(text) {
+    chatFetch(messages: ApiMessage[]) {
       const url = new URL(`${ location.origin }/spark/v1/chat/completions`)
-      const params = {
-      }
-      Object.keys(params).forEach(key => {
-        url.searchParams.append(key, params[key])
-      })
 
       const req = new Request(url, {
         method: 'post',
@@ -423,10 +379,7 @@ export const modelMappingList: TypesModelLLM[] = [
               role: 'system',
               content: '你叫小明同学，喜欢探索新的前端知识，目前正在学习 AI 大模型。你可以解决任何前端方面的问题。'
             },
-            {
-              'role': 'user',
-              'content': text
-            }
+            ...messages
           ]
         })
       })
@@ -448,13 +401,8 @@ export const modelMappingList: TypesModelLLM[] = [
       }
     },
     // Event Stream 调用大模型接口 SiliconFlow 硅基流动大模型 (Fetch 调用)
-    chatFetch(text) {
+    chatFetch(messages: ApiMessage[]) {
       const url = new URL(`${ location.origin }/siliconflow/v1/chat/completions`)
-      const params = {
-      }
-      Object.keys(params).forEach(key => {
-        url.searchParams.append(key, params[key])
-      })
 
       const req = new Request(url, {
         method: 'post',
@@ -463,15 +411,9 @@ export const modelMappingList: TypesModelLLM[] = [
           'Authorization': `Bearer ${ import.meta.env.VITE_SILICONFLOW_KEY }`
         },
         body: JSON.stringify({
-          // 集成了大部分模型，可以免费使用
           'model': 'THUDM/glm-4-9b-chat',
           stream: true,
-          messages: [
-            {
-              'role': 'user',
-              'content': text
-            }
-          ]
+          messages
         })
       })
       return fetch(req)
@@ -492,13 +434,8 @@ export const modelMappingList: TypesModelLLM[] = [
       }
     },
     // Event Stream 调用大模型接口 Kimi Moonshot 月之暗面大模型 (Fetch 调用)
-    chatFetch (text) {
+    chatFetch (messages: ApiMessage[]) {
       const url = new URL(`${ location.origin }/moonshot/v1/chat/completions`)
-      const params = {
-      }
-      Object.keys(params).forEach(key => {
-        url.searchParams.append(key, params[key])
-      })
 
       const req = new Request(url, {
         method: 'post',
@@ -514,10 +451,7 @@ export const modelMappingList: TypesModelLLM[] = [
               role: 'system',
               content: '你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言。'
             },
-            {
-              role: 'user',
-              content: text
-            }
+            ...messages
           ]
         })
       })

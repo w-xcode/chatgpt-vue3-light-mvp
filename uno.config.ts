@@ -1,7 +1,6 @@
 import {
   defineConfig,
   presetAttributify,
-  presetIcons,
   presetWind3,
   toEscapedSelector,
   transformerDirectives
@@ -14,7 +13,6 @@ export default defineConfig({
   presets: [
     presetWind3(),
     presetAttributify(),
-    presetIcons(),
     presetRemToPx({
       baseFontSize: 4
     })
@@ -41,34 +39,5 @@ export default defineConfig({
       border: '#c2c2c2'
     }
   },
-  rules: [
-    [
-      'navbar-shadow', {
-        'box-shadow': '0 1px 4px rgb(0 21 41 / 8%)'
-      }
-    ],
-    [
-      /^wrapper-dialog-(.+)$/,
-      ([, name], { rawSelector, theme }) => {
-        const themeColor = (theme as any).colors
-        const selector = toEscapedSelector(rawSelector)
-        return `
-          ${ selector } {
-            display: flex;
-            flex-direction: column;
-            padding: 0;
-            overflow: hidden;
-          }
-          ${ selector } .n-dialog__title {
-            padding: var(--n-padding);
-          }
-          ${ selector } .n-dialog__content {
-            display: flex;
-            flex: 1;
-            min-height: 0;
-          }
-      `
-      }
-    ]
-  ]
+  rules: []
 })

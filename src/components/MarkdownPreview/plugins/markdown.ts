@@ -11,7 +11,6 @@ import 'katex/dist/contrib/mhchem.min.js'
 
 import {
   markdownItMermaidPlugin,
-  renderMermaidSSE,
   transformMermaid
 } from '@nzoth/toolkit'
 
@@ -122,9 +121,4 @@ export const renderMarkdownText = (content: string) => {
   const mathTransformed = transformMathMarkdown(thinkTransformed)
   const mermaidTransformed = transformMermaid(mathTransformed)
   return md.render(mermaidTransformed)
-}
-
-// 触发 Mermaid 渲染
-export const renderMermaidProcess = (callback = () => {}) => {
-  renderMermaidSSE(callback)
 }

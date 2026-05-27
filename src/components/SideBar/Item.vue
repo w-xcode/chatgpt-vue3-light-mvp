@@ -42,34 +42,34 @@ const emit = defineEmits([
       <slot></slot>
     </div>
     <div
-      class="opacity-0 transition-colors-200 text-16"
+      class="transition-colors-200 text-16 rounded-4px cursor-pointer"
       px="4"
       :class="[
         active
-          ? 'opacity-100 c-primary/60 hover:c-primary'
-          : 'group-hover:opacity-100 c-#303133/60 hover:c-primary'
+          ? 'c-#666 hover:c-primary hover:bg-primary/10'
+          : 'c-#aaa hover:c-primary hover:bg-primary/10'
       ]"
       flex="~ justify-center items-center"
       @click.stop="emit('edit')"
     >
-      <div class="i-mingcute:pencil-2-line"></div>
+      <span text-12>edit</span>
     </div>
     <n-popconfirm
       @positive-click="emit('remove')"
     >
       <template #trigger>
         <div
-          class="opacity-0 transition-colors-200 text-16"
+          class="transition-colors-200 text-16 rounded-4px cursor-pointer"
           px="4"
           :class="[
             active
-              ? 'opacity-100 c-primary/60 hover:c-primary'
-              : 'group-hover:opacity-100 c-#303133/60 hover:c-primary'
+              ? 'c-#666 hover:c-error hover:bg-error/10'
+              : 'c-#aaa hover:c-error hover:bg-error/10'
           ]"
           flex="~ justify-center items-center"
           @click.stop
         >
-          <div class="i-mingcute:delete-2-line"></div>
+          <span text-12>del</span>
         </div>
       </template>
       确认删除？

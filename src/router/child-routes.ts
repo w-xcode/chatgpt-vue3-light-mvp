@@ -15,6 +15,18 @@ const childrenRoutes: Array<RouteRecordRaw> = [
         component: () => import('@/views/chat.vue')
       }
     ]
+  },
+  {
+    path: '/dashboard',
+    component: LayoutDefault,
+    name: 'DashboardRoot',
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard.vue')
+      }
+    ]
   }
 ]
 

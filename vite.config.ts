@@ -8,8 +8,6 @@ import UnoCSS from 'unocss/vite'
 
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
 
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import { loadEnv } from 'vite'
@@ -77,10 +75,6 @@ export default defineConfig(({ mode }) => {
               'useRouter',
               'useRoute'
             ],
-            'uuid': [['v4', 'uuidv4']],
-            'lodash-es': [
-              ['*', '_']
-            ],
             'naive-ui': [
               'useDialog',
               'useMessage',
@@ -116,7 +110,9 @@ export default defineConfig(({ mode }) => {
         dirs: [
           './src/hooks',
           './src/store/business',
-          './src/store/transform'
+          './src/store/session',
+          './src/store/message',
+          './src/store/emotion'
         ],
         dts: './auto-imports.d.ts',
         eslintrc: {
@@ -128,20 +124,8 @@ export default defineConfig(({ mode }) => {
         directoryAsNamespace: true,
         collapseSamePrefixes: true,
         resolvers: [
-          IconsResolver({
-            prefix: 'auto-icon'
-          }),
           NaiveUiResolver()
         ]
-      }),
-      // Auto use Iconify icon
-      Icons({
-        autoInstall: true,
-        compiler: 'vue3',
-        scale: 1.2,
-        defaultStyle: '',
-        defaultClass: 'unplugin-icon',
-        jsx: 'react'
       })
     ],
     resolve: {

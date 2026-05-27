@@ -1,12 +1,9 @@
 import { defineStore } from 'pinia'
 
-import { sleep } from '@/utils/request'
-import * as GlobalAPI from '@/api'
-
-
 import * as TransformUtils from '@/components/MarkdownPreview/transform'
 
 import { defaultModelName, modelMappingList } from '@/components/MarkdownPreview/models'
+import type { ApiMessage } from '@/types/chat'
 
 export interface BusinessState {
   systemModelName: string
@@ -27,7 +24,7 @@ export const useBusinessStore = defineStore('business-store', {
     /**
      * Event Stream 调用大模型接口
      */
-    async createAssistantWriterStylized(data): Promise<{error: number
+    async createAssistantWriterStylized(data: { messages: ApiMessage[] }): Promise<{error: number
       reader: ReadableStreamDefaultReader<string> | null}> {
 
       // 调用当前模型的接口
@@ -38,7 +35,7 @@ export const useBusinessStore = defineStore('business-store', {
             reader: null
           }
         }
-        this.currentModelItem.chatFetch(data.text)
+        this.currentModelItem.chatFetch(data.messages)
           .then((res) => {
             if (res.body) {
               const reader = res.body

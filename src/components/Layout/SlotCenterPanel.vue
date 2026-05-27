@@ -35,7 +35,7 @@ withDefaults(
           }"
         >
           <template #icon>
-            <div class="i-svg-spinners:pulse-3"></div>
+            <div>...</div>
           </template>
           <section
             v-if="$slots.left"
