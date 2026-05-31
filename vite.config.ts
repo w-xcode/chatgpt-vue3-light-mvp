@@ -22,29 +22,10 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 2048,
       proxy: {
-        '/spark': {
-          target: 'https://spark-api-open.xf-yun.com',
-          changeOrigin: true,
-          ws: true,
-          rewrite: (path) => path.replace(/^\/spark/, '')
-        },
-        '/siliconflow': {
-          target: 'https://api.siliconflow.cn',
-          changeOrigin: true,
-          ws: true,
-          rewrite: (path) => path.replace(/^\/siliconflow/, '')
-        },
-        '/moonshot': {
-          target: 'https://api.moonshot.cn',
-          changeOrigin: true,
-          ws: true,
-          rewrite: (path) => path.replace(/^\/moonshot/, '')
-        },
         '/deepseek': {
-          target: 'https://api.deepseek.com',
+          target: 'http://localhost:3001',
           changeOrigin: true,
-          ws: true,
-          rewrite: (path) => path.replace(/^\/deepseek/, '')
+          ws: true
         }
       }
     },
