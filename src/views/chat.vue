@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { defaultMockModelName, modelMappingList, triggerModelTermination } from '@/components/MarkdownPreview/models'
+import { modelMappingList, triggerModelTermination } from '@/components/MarkdownPreview/models'
 import type { SelectBaseOption } from 'naive-ui/es/select/src/interface'
-import { isGithubDeployed } from '@/config'
 import { useSessionStore } from '@/store/session'
 import { useMessageStore } from '@/store/message'
 
@@ -12,17 +11,11 @@ const messageStore = useMessageStore()
 const emotionStore = useEmotionStore()
 
 const modelListSelections = computed(() => {
-  return modelMappingList.map<SelectBaseOption>((modelItem) => {
-    let disabled = false
-    if (isGithubDeployed && modelItem.modelName !== defaultMockModelName) {
-      disabled = true
-    }
-    return {
-      label: modelItem.label,
-      value: modelItem.modelName,
-      disabled
-    }
-  })
+  return modelMappingList.map<SelectBaseOption>((modelItem) => ({
+    label: modelItem.label,
+    value: modelItem.modelName,
+    disabled: false
+  }))
 })
 
 const refMessageList = ref<any>()

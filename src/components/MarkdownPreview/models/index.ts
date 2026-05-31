@@ -1,5 +1,3 @@
-import { mockEventStreamText } from '@/data'
-import { sleep } from '@/utils/request'
 import type { ApiMessage } from '@/types/chat'
 
 /**
@@ -55,14 +53,14 @@ export const createParser = () => {
       }
 
       if (!trimmedContent) {
-        return null
+        return null // 空内容，直接忽略
       }
 
       if (trimmedContent.startsWith('{') && trimmedContent.endsWith('}')) {
-        return JSON.parse(trimmedContent)
+        return JSON.parse(trimmedContent) // 是 JSON 对象，直接解析
       }
       if (trimmedContent.startsWith('[') && trimmedContent.endsWith(']')) {
-        return JSON.parse(trimmedContent)
+        return JSON.parse(trimmedContent) // 是 JSON 数组，直接解析
       }
     } catch (error) {
       console.error('尝试直接解析 JSON 失败：', error)
@@ -182,56 +180,11 @@ interface TypesModelLLM {
 /** ---------------- 大模型映射列表 & Response Transform 用于处理不同类型流的值转换器 ---------------- */
 
 /**
- * Mock 模拟模型的 name
- */
-export const defaultMockModelName = 'standard'
-
-/**
  * 项目默认使用模型，按需修改此字段即可
  */
-
-export const defaultModelName = defaultMockModelName
+export const defaultModelName = 'deepseek-v3'
 
 export const modelMappingList: TypesModelLLM[] = [
-  {
-    label: '🧪 模拟数据模型',
-    modelName: 'standard',
-    transformStreamValue(readValue, textDecoder) {
-      let content = ''
-      if (readValue instanceof Uint8Array) {
-        content = textDecoder.decode(readValue, {
-          stream: true
-        })
-      } else {
-        content = readValue
-      }
-      return {
-        content
-      }
-    },
-    // Mock Event Stream 用于模拟读取大模型接口 Mock 数据
-    async chatFetch(messages: ApiMessage[]): Promise<Response> {
-      // 模拟 res.body 的数据
-      // 将 mockData 转换为 ReadableStream
-
-      const mockReadableStream = new ReadableStream({
-        start(controller) {
-          // 将每一行数据作为单独的 chunk
-          mockEventStreamText.split('\n').forEach(line => {
-            controller.enqueue(new TextEncoder().encode(`${ line }\n`))
-          })
-          controller.close()
-        }
-      })
-      await sleep(500)
-
-      return new Promise((resolve) => {
-        resolve({
-          body: mockReadableStream
-        } as Response)
-      })
-    }
-  },
   {
     label: '🐋 DeepSeek-V3',
     modelName: 'deepseek-v3',
