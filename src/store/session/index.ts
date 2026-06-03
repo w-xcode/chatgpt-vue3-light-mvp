@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
+import { useMessageStore } from '@/store/message'
 import { useEmotionStore } from '@/store/emotion'
 import type { Session } from '@/types/chat'
 
 const STORAGE_KEY = 'chat-sessions'
 
-export const useSessionStore = defineStore('session-store', {
+export const useSessionStore = defineStore("session-store", {
   state: () => ({
     sessions: [] as Session[],
     activeSessionId: null as string | null,
@@ -12,7 +13,7 @@ export const useSessionStore = defineStore('session-store', {
 
   getters: {
     activeSession(state): Session | undefined {
-      return state.sessions.find(s => s.id === state.activeSessionId)
+      return state.sessions.find((s) => s.id === state.activeSessionId)
     },
     hasSessions(state): boolean {
       return state.sessions.length > 0
@@ -20,6 +21,7 @@ export const useSessionStore = defineStore('session-store', {
   },
 
   actions: {
+    //从 localStorage 恢复数据
     loadFromStorage() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY)
@@ -31,6 +33,7 @@ export const useSessionStore = defineStore('session-store', {
       }
     },
 
+    //把当前数据存到 localStorage
     persistToStorage() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.sessions))
     },
@@ -38,7 +41,7 @@ export const useSessionStore = defineStore('session-store', {
     createSession(): Session {
       const session: Session = {
         id: crypto.randomUUID(),
-        title: 'New Chat',
+        title: "New Chat",
         createdAt: Date.now(),
         updatedAt: Date.now(),
       }
@@ -49,16 +52,17 @@ export const useSessionStore = defineStore('session-store', {
     },
 
     deleteSession(id: string) {
-      this.sessions = this.sessions.filter(s => s.id !== id)
+      this.sessions = this.sessions.filter((s) => s.id !== id)
       if (this.activeSessionId === id) {
         this.activeSessionId = this.sessions[0]?.id ?? null
       }
       this.persistToStorage()
+      useMessageStore().removeMessagesBySession(id)
       useEmotionStore().removeReportsBySession(id)
     },
 
     renameSession(id: string, title: string) {
-      const session = this.sessions.find(s => s.id === id)
+      const session = this.sessions.find((s) => s.id === id)
       if (session) {
         session.title = title
         this.persistToStorage()
@@ -70,7 +74,7 @@ export const useSessionStore = defineStore('session-store', {
     },
 
     updateSessionTimestamp(id: string) {
-      const session = this.sessions.find(s => s.id === id)
+      const session = this.sessions.find((s) => s.id === id)
       if (session) {
         session.updatedAt = Date.now()
         this.sessions.sort((a, b) => b.updatedAt - a.updatedAt)
@@ -79,7 +83,8 @@ export const useSessionStore = defineStore('session-store', {
     },
 
     generateTitle(sessionId: string, firstMessage: string) {
-      const title = firstMessage.slice(0, 30) + (firstMessage.length > 30 ? '...' : '')
+      const title =
+        firstMessage.slice(0, 30) + (firstMessage.length > 30 ? "..." : "")
       this.renameSession(sessionId, title)
     },
   },

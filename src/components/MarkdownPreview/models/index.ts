@@ -173,7 +173,7 @@ interface TypesModelLLM {
   // Stream 结果转换器
   transformStreamValue: TransformFunction
   // 每个大模型调用的 API 请求
-  chatFetch: (messages: ApiMessage[]) => Promise<Response>
+  chatFetch: (messages: ApiMessage[], signal?: AbortSignal) => Promise<Response>
 }
 
 
@@ -205,7 +205,7 @@ export const modelMappingList: TypesModelLLM[] = [
       }
     },
     // Event Stream 调用大模型接口 DeepSeek 深度求索 (Fetch 调用)
-    chatFetch(messages: ApiMessage[]) {
+    chatFetch(messages: ApiMessage[], signal?: AbortSignal) {
       const url = new URL(`${ location.origin }/deepseek/chat/completions`)
 
       const req = new Request(url, {
@@ -219,7 +219,7 @@ export const modelMappingList: TypesModelLLM[] = [
           messages
         })
       })
-      return fetch(req)
+      return fetch(req, { signal })
     }
   },
   {
@@ -242,7 +242,7 @@ export const modelMappingList: TypesModelLLM[] = [
       }
     },
     // Event Stream 调用大模型接口 DeepSeek 深度求索 (Fetch 调用)
-    chatFetch(messages: ApiMessage[]) {
+    chatFetch(messages: ApiMessage[], signal?: AbortSignal) {
       const url = new URL(`${ location.origin }/deepseek/chat/completions`)
 
       const req = new Request(url, {
@@ -256,7 +256,7 @@ export const modelMappingList: TypesModelLLM[] = [
           messages
         })
       })
-      return fetch(req)
+      return fetch(req, { signal })
     }
   }
 ]

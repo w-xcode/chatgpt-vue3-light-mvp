@@ -79,10 +79,14 @@ const handleSend = async (text: string) => {
   // Add placeholder assistant message
   const assistantMsg = messageStore.addAssistantMessage(sessionId)
 
+  // Create AbortController for cancelling the stream
+  const controller = new AbortController()
+  messageStore.setActiveController(controller)
+
   // Build messages array for API
   const { error, reader } = await businessStore.createAssistantWriterStylized({
     messages: messageStore.apiMessages
-  })
+  }, controller.signal)
 
   if (error || !reader) {
     messageStore.failMessage(assistantMsg.id)
@@ -90,8 +94,6 @@ const handleSend = async (text: string) => {
     window.$ModalMessage.error('请求失败，请重试')
     return
   }
-
-  messageStore.setActiveReader(reader)
 
   // Read stream
   try {
@@ -119,7 +121,7 @@ const handleSend = async (text: string) => {
   } catch {
     messageStore.failMessage(assistantMsg.id)
   } finally {
-    messageStore.clearActiveReader()
+    messageStore.clearActiveController()
     triggerModelTermination()
     nextTick(() => refMessageList.value?.scrollToBottom())
   }

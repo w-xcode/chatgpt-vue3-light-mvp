@@ -7,7 +7,7 @@ const STORAGE_KEY = 'chat-messages'
 export const useMessageStore = defineStore('message-store', {
   state: () => ({
     messagesBySession: {} as Record<string, ChatMessage[]>,
-    activeReader: null as ReadableStreamDefaultReader<string> | null,
+    activeController: null as AbortController | null,
     activeStreamingMessageId: null as string | null,
     isStreaming: false,
   }),
@@ -97,7 +97,7 @@ export const useMessageStore = defineStore('message-store', {
       }
       this.activeStreamingMessageId = null
       this.isStreaming = false
-      this.activeReader = null
+      this.activeController = null
       this.persistToStorage()
     },
 
@@ -111,7 +111,7 @@ export const useMessageStore = defineStore('message-store', {
       }
       this.activeStreamingMessageId = null
       this.isStreaming = false
-      this.activeReader = null
+      this.activeController = null
       this.persistToStorage()
     },
 
@@ -120,18 +120,18 @@ export const useMessageStore = defineStore('message-store', {
       this.persistToStorage()
     },
 
-    setActiveReader(reader: ReadableStreamDefaultReader<string>) {
-      this.activeReader = reader
+    setActiveController(controller: AbortController) {
+      this.activeController = controller
     },
 
-    clearActiveReader() {
-      this.activeReader = null
+    clearActiveController() {
+      this.activeController = null
     },
 
     abortActiveStream() {
-      if (this.activeReader) {
-        this.activeReader.cancel()
-        this.activeReader = null
+      if (this.activeController) {
+        this.activeController.abort('用户主动取消')
+        this.activeController = null
       }
       if (this.activeStreamingMessageId) {
         this.failMessage(this.activeStreamingMessageId)
@@ -149,7 +149,7 @@ export const useMessageStore = defineStore('message-store', {
       }
       this.isStreaming = false
       this.activeStreamingMessageId = null
-      this.activeReader = null
+      this.activeController = null
       this.persistToStorage()
     },
   },

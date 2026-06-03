@@ -24,18 +24,19 @@ export const useBusinessStore = defineStore('business-store', {
     /**
      * Event Stream 调用大模型接口
      */
-    async createAssistantWriterStylized(data: { messages: ApiMessage[] }): Promise<{error: number
+    async createAssistantWriterStylized(data: { messages: ApiMessage[] }, signal?: AbortSignal): Promise<{error: number
       reader: ReadableStreamDefaultReader<string> | null}> {
 
       // 调用当前模型的接口
       return new Promise((resolve) => {
         if (!this.currentModelItem?.chatFetch) {
-          return {
+          resolve({
             error: 1,
             reader: null
-          }
+          })
+          return
         }
-        this.currentModelItem.chatFetch(data.messages)
+        this.currentModelItem.chatFetch(data.messages, signal)
           .then((res) => {
             if (res.body) {
               const reader = res.body
