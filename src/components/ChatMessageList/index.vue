@@ -6,6 +6,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits<{ retry: [message: ChatMessage] }>()
 
 const scrollRef = ref<HTMLElement>()
 
@@ -52,6 +53,7 @@ defineExpose({ scrollToBottom })
       v-for="msg in messages"
       :key="msg.id"
       :message="msg"
+      @retry="emit('retry', $event)"
     />
   </div>
 </template>

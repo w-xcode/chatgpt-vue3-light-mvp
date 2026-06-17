@@ -31,3 +31,9 @@ yarn-error.log*
 !.env.template
 
 vite.config.ts.timestamp*
+
+# 个人学习/面试资料
+学习计划-AI情绪对话.md
+导学-AI情绪对话.md
+面经-AI情绪对话.md
+面试背诵材料.md

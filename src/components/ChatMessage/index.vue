@@ -7,6 +7,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits<{ retry: [message: ChatMessage] }>()
 
 const emotionStore = useEmotionStore()
 
@@ -52,13 +53,11 @@ const riskTagType = (risk: string) => {
       class="max-w-85%"
     >
       <div class="px-14px py-10px rounded-12px bg-#f5f5f5 c-#333 text-15 leading-relaxed">
-        <div
-          v-if="isFailed"
-          c-error
-          text-14
-        >
-          <span mr-4px>!</span>
-          生成失败
+        <div v-if="isFailed">
+          <div class="markdown-body" v-html="renderedHtml"></div>
+          <div flex="~ justify-end" mt-4px>
+            <n-button text type="error" size="tiny" @click="emit('retry', message)">重新生成</n-button>
+          </div>
         </div>
         <div
           v-else

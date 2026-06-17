@@ -3,6 +3,7 @@ import { modelMappingList, triggerModelTermination } from '@/components/Markdown
 import type { SelectBaseOption } from 'naive-ui/es/select/src/interface'
 import { useSessionStore } from '@/store/session'
 import { useMessageStore } from '@/store/message'
+import type { ChatMessage } from '@/types/chat'
 
 const router = useRouter()
 const businessStore = useBusinessStore()
@@ -56,6 +57,13 @@ watch(
     })
   }
 )
+
+const handleRetry = (message: ChatMessage) => {
+  // 找到该消息之前的最近一条 user 消息，重新发送
+  const idx = messageStore.currentMessages.indexOf(message)
+  const userMsg = [...messageStore.currentMessages].slice(0, idx).reverse().find(m => m.role === 'user')
+  if (userMsg) handleSend(userMsg.content)
+}
 
 const handleSend = async (text: string) => {
   // Ensure active session
@@ -171,6 +179,7 @@ const handleStop = () => {
       <ChatMessageList
         ref="refMessageList"
         :messages="messageStore.currentMessages"
+        @retry="handleRetry"
       />
       <ChatInput
         ref="refChatInput"
