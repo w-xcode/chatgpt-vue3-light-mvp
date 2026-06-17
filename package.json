@@ -1,7 +1,7 @@
 {
   "name": "chatgpt-vue3-light-mvp",
   "version": "0.0.1",
-  "author": "Wisdom <pdsu.wwz@foxmail.com>",
+  "author": "w-xcode",
   "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@10.18.2",
@@ -21,13 +21,13 @@
     "node": ">= 22.12.x",
     "pnpm": ">= 10.x"
   },
-  "homepage": "https://github.com/pdsuwwz/chatgpt-vue3-light-mvp",
+  "homepage": "https://github.com/w-xcode/chatgpt-vue3-light-mvp",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pdsuwwz/chatgpt-vue3-light-mvp"
+    "url": "git+https://github.com/w-xcode/chatgpt-vue3-light-mvp"
   },
   "bugs": {
-    "url": "https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/issues"
+    "url": "https://github.com/w-xcode/chatgpt-vue3-light-mvp/issues"
   },
   "dependencies": {
     "@nzoth/toolkit": "^0.0.4",
