@@ -7,15 +7,15 @@
 
 # chatgpt-vue3-light-mvp
 
-[![Deploy](https://img.shields.io/badge/passing-black?style=flat&logo=Netlify&label=Netlify&color=3bb92c&labelColor=black)](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/deployments)
-[![GitHub Workflow Status (branch)](https://img.shields.io/badge/passing-black?style=flat&label=build&color=3bb92c)](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/deployments/Production)
-[![thanks](https://badgen.net/badge/thanks/♥/pink)](https://github.com/pdsuwwz)
-[![License](https://img.shields.io/github/license/pdsuwwz/chatgpt-vue3-light-mvp?color=466fe8)](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/LICENSE)
+[![Deploy](https://img.shields.io/badge/passing-black?style=flat&logo=Netlify&label=Netlify&color=3bb92c&labelColor=black)](https://github.com/w-xcode/chatgpt-vue3-light-mvp/deployments)
+[![GitHub Workflow Status (branch)](https://img.shields.io/badge/passing-black?style=flat&label=build&color=3bb92c)](https://github.com/w-xcode/chatgpt-vue3-light-mvp/deployments/Production)
+[![thanks](https://badgen.net/badge/thanks/♥/pink)](https://github.com/w-xcode)
+[![License](https://img.shields.io/github/license/w-xcode/chatgpt-vue3-light-mvp?color=466fe8)](https://github.com/w-xcode/chatgpt-vue3-light-mvp/blob/main/LICENSE)
 
 💭 一个可二次开发 Chat Bot 对话 Web 端原型模板, 基于 Vue3、Vite 6、TypeScript、Naive UI、Pinia、UnoCSS 等主流技术构建, 🧤简单集成大模型 API, 采用单轮 AI 问答对话模式, 每次提问独立响应, 无需上下文, 支持打字机效果流式输出, 集成 markdown-it, highlight.js, 数学公式, Mermaid 图表语法高亮预览, 💼 易于定制和快速搭建 Chat 类大语言模型产品
 
 
-__[🌈 Live Demo 在线体验](https://pdsuwwz.github.io/chatgpt-vue3-light-mvp)__
+__[🌈 Live Demo 在线体验](https://w-xcode.github.io/chatgpt-vue3-light-mvp)__
 
 > [!IMPORTANT]
 > 本项目为最小可行产品 `(MVP)`, 仅支持**单轮对话模式**（每次提问独立响应，不保留上下文）
@@ -195,7 +195,7 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 
 ### 接口函数修改
 
-请求的函数已经针对目前项目内置的所有模型的响应结果做了统一处理，在（[src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L30)）的 [`createAssistantWriterStylized`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L30) 函数，一般情况下，不需要修改此函数，除非遇到极个别模型比较特殊的响应结果格式，需要再额外处理下。
+请求的函数已经针对目前项目内置的所有模型的响应结果做了统一处理，在（[src/store/business/index.ts](https://github.com/w-xcode/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L30)）的 [`createAssistantWriterStylized`](https://github.com/w-xcode/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L30) 函数，一般情况下，不需要修改此函数，除非遇到极个别模型比较特殊的响应结果格式，需要再额外处理下。
 
 
 ---
@@ -329,7 +329,7 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 
 </details>
 
-👉 可在 [src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts) 中查看更多实现细节
+👉 可在 [src/store/business/index.ts](https://github.com/w-xcode/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts) 中查看更多实现细节
 
 ### 🧠 已支持的模型
 
@@ -367,7 +367,7 @@ export const isGithubDeployed = process.env.VITE_ROUTER_MODE === 'hash'
 />
 ```
 
-其中 `model` 和 `transformStreamFn` 的值会根据用户选择的下拉框选项自动映射到对应的模型，并实时由全局 pinia [src/store/business/index.ts](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L22) 状态管理来管控：
+其中 `model` 和 `transformStreamFn` 的值会根据用户选择的下拉框选项自动映射到对应的模型，并实时由全局 pinia [src/store/business/index.ts](https://github.com/w-xcode/chatgpt-vue3-light-mvp/blob/main/src/store/business/index.ts#L22) 状态管理来管控：
 
 ```ts
 export const useBusinessStore = defineStore('business-store', {
@@ -412,7 +412,7 @@ export const defaultModelName = defaultMockModelName
 
 ## 🌹 支持
 
-如果你喜欢这个项目或发现有用，可以点右上角 [`Star`](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp) 支持一下，你的支持是我们不断改进的动力，感谢！ ^_^ 
+如果你喜欢这个项目或发现有用，可以点右上角 [`Star`](https://github.com/w-xcode/chatgpt-vue3-light-mvp) 支持一下，你的支持是我们不断改进的动力，感谢！ ^_^ 
 
 
 ## 🌟 相关项目
@@ -427,7 +427,7 @@ export const defaultModelName = defaultMockModelName
 
 💡 如果您的项目也在使用或借鉴了本项目，我们诚挚欢迎您：
 
-- 通过提交 [Issue](https://github.com/pdsuwwz/chatgpt-vue3-light-mvp/issues) 分享您的项目链接
+- 通过提交 [Issue](https://github.com/w-xcode/chatgpt-vue3-light-mvp/issues) 分享您的项目链接
 - 提交 Pull Request (PR) 将您的项目添加到列表中
 
 
@@ -444,5 +444,5 @@ export const defaultModelName = defaultMockModelName
 
 ## License
 
-[MIT](./LICENSE) License | Copyright © 2020-PRESENT [Wisdom](https://github.com/pdsuwwz)
+[MIT](./LICENSE) License | Copyright © 2020-PRESENT [w-xcode](https://github.com/w-xcode)
 
